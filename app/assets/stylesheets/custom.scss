@@ -12,6 +12,7 @@ $white: #fff;
     box-sizing: border-box;
 }
 
+
 /* miscellaneous */
 .debug_dump { 
     clear: both;
@@ -58,6 +59,10 @@ input {
     @extend .has-error; .form-control {
         color: $state-danger-text;
     }
+}
+
+#session_remember_me {
+    margin-left: -40px;
 }
 
 

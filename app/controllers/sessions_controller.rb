@@ -6,7 +6,9 @@ class SessionsController < ApplicationController
     # Gets the user's email and password from the form and compares it with the User db
     if user && user.authenticate(params[:session][:password])
       # Log in and render that user's page
-      log_in user # Helper function login! -> Creates a temporary session for the user!
+      log_in(user) # Helper function login! -> Creates a temporary session for the user!
+      # Helper function for remembering the user through cookies!
+      params[:session][:remember_me] == '1' ? remember_user(user) : forget_user(user)
       flash[:success] = "Logged in as " + params[:session][:email].downcase
       redirect_to user
     else
@@ -15,7 +17,7 @@ class SessionsController < ApplicationController
     end
   end
   def destroy
-    log_out
+    log_out if logged_in?
     flash[:success] = "Logged out..."
     redirect_to root_url
   end
