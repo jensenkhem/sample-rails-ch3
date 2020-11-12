@@ -29,6 +29,12 @@ module SessionsHelper
             end 
         end
     end
+
+    def current_user?(user)
+        return user == current_user
+    end
+
+
     # Uses cookies to remember the user for the next time they visit the site
     def remember_user(user)
         user.remember
@@ -46,6 +52,17 @@ module SessionsHelper
     # Calls the above current_user function to avoid accessing the db
     def logged_in?
         return !current_user.nil?
+    end
+
+    # Redirects to stored location (or to the default). 
+    def redirect_back_or(default)
+        redirect_to(session[:forwarding_url] || default)
+        session.delete(:forwarding_url) 
+    end
+
+    # Stores the URL trying to be accessed.
+    def store_location
+        session[:forwarding_url] = request.original_url if request.get?
     end
 
 end
