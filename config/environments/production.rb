@@ -23,10 +23,10 @@ Rails.application.configure do
   host = 'powerful-wave-25393.herokuapp.com'
   config.action_mailer.default_url_options = { host: host } 
   ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.mailgun.org',
-    :port           => '587',
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :port => ENV['MAILGUN_SMTP_PORT']
     :authentication => :plain,
-    :user_name => 'postmaster@' + ENV['MAILGUN_DOMAIN'],
+    :user_name => ENV['MAILGUN_SMTP_LOGIN'],
     :password => ENV['MAILGUN_SMTP_PASSWORD'],
     :domain => ENV['MAILGUN_DOMAIN'],
 }
