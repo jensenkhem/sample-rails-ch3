@@ -23,7 +23,7 @@ module SessionsHelper
             # Then, we use this user to compare the remember token on the client with the hashed
             # database token, to authenticate the user!
             user = User.find_by(id: user_id)
-            if user && user.authenticated?(cookies[:remember_token])
+            if user && user.authenticated?(:remember, cookies[:remember_token])
                 log_in user
                 @current_user = user
             end 

@@ -6,12 +6,17 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     # Gets the user's email and password from the form and compares it with the User db
     if user && user.authenticate(params[:session][:password])
-      # Log in and render that user's page
-      log_in(user) # Helper function login! -> Creates a temporary session for the user!
-      # Helper function for remembering the user through cookies!
-      params[:session][:remember_me] == '1' ? remember_user(user) : forget_user(user)
-      redirect_back_or user
-      flash[:success] = "Logged in as " + params[:session][:email].downcase
+      if(user.activated?)
+        # Log in and render that user's page
+        log_in(user) # Helper function login! -> Creates a temporary session for the user!
+        # Helper function for remembering the user through cookies!
+        params[:session][:remember_me] == '1' ? remember_user(user) : forget_user(user)
+        redirect_back_or user
+        flash[:success] = "Logged in as " + params[:session][:email].downcase
+      else
+        flash[:danger] = "Please check your email to activate your account!"
+        redirect_to root_url
+      end
     else
       flash.now[:danger] = "Invalid email/password combination!"
       render 'new' # Does not count as a redirect, so be careful with flash messages
